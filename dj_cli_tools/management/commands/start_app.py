@@ -25,10 +25,20 @@ class Command(StartAppCommand):
 
         if template_dir is None:
             raise CommandError(
-                "Could not locate templates/rest_version_app_template in repository parents")
+                f"Could not locate dj_templates/{template_name} in repository parents")
         return str(template_dir)
 
-    def handle(self, *args, **options):
-        options["template"] = self.find_directory("rest_version_app_template")
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument(
+            "--dj_template", help="Name of the application or project.")
 
+    def handle(self, *args, **options):
+        if "dj_template" in options and "template" in options:
+            raise CommandError(
+                "Cannot use --dj_template with --template option.")
+        dj_template = options.pop("dj_template")
+        if (dj_template):
+            dj_template_path = self.find_directory(dj_template)
+            options["template"] = dj_template_path
         return super().handle(*args, **options)
