@@ -5,20 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "dj-cli-tools"
 version = "0.1"
-dependencies = [
-    "django>=5.2",
-]
+dependencies = ["django>=5.2"]
 description = "A Django app to conduct web-based polls."
 readme = "README.rst"
 license = "BSD-3-Clause"
 requires-python = ">= 3.13"
-authors = [
-    {name = "Abhijith Konnayil", email = "iamabhijith.k@gmail.com"},
-]
+authors = [{ name = "Abhijith Konnayil", email = "iamabhijith.k@gmail.com" }]
 classifiers = [
     "Environment :: Web Environment",
     "Framework :: Django",
-    "Framework :: Django :: X.Y",  # Replace "X.Y" as appropriate
+    "Framework :: Django :: X.Y",                       # Replace "X.Y" as appropriate
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
@@ -35,3 +31,10 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://www.example.com/"
+
+# Use explicit package discovery to avoid accidentally packaging top-level
+# directories such as `templates`. This mirrors setuptools' "find" with
+# an include pattern so only the `dj_cli_tools` package (and its subpackages)
+# are included in the built distribution.
+[tool.setuptools.packages.find]
+include = ["dj_cli_tools*"]
