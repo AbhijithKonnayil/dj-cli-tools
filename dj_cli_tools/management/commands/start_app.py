@@ -34,7 +34,7 @@ class Command(StartAppCommand):
             "--dj_template", help="Name of the application or project.")
 
     def handle(self, *args, **options):
-        if "dj_template" in options and "template" in options:
+        if options["dj_template"] and options["template"]:
             raise CommandError(
                 "Cannot use --dj_template with --template option.")
         dj_template = options.pop("dj_template")
