@@ -1,3 +1,0 @@
-from rest_framework import viewsets
-
-# Create your version specific views here.
