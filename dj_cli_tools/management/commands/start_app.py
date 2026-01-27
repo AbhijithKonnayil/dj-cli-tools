@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 from typing import Optional
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management.commands.startapp import Command as StartAppCommand
 
@@ -34,11 +34,12 @@ class Command(StartAppCommand):
             "--dj_template", help="Name of the application or project.")
 
     def handle(self, *args, **options):
-        if options["dj_template"] and options["template"]:
+        if options.get("dj_template") and options.get("template"):
             raise CommandError(
                 "Cannot use --dj_template with --template option.")
-        dj_template = options.pop("dj_template")
-        if (dj_template):
+        dj_template = options.pop("dj_template", None)
+        if dj_template:
             dj_template_path = self.find_directory(dj_template)
             options["template"] = dj_template_path
-        return super().handle(*args, **options)
+            
+        super().handle(*args, **options)
