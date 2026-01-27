@@ -37,4 +37,7 @@ Homepage = "https://github.com/AbhijithKonnayil/dj-cli-tools/"
 # an include pattern so only the `dj_cli_tools` package (and its subpackages)
 # are included in the built distribution.
 [tool.setuptools.packages.find]
-include = ["dj_cli_tools*"]
+include = ["dj_cli_tools*", "dj_templates*"]
+
+[tool.setuptools]
+include-package-data = true
