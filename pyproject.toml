@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dj-cli-tools"
-version = "0.1"
+version = "0.2"
 dependencies = ["django>=5.2"]
 description = "A Django app to conduct web-based polls."
 readme = "README.md"
