@@ -45,16 +45,41 @@ class Command(StartAppCommand):
             dj_template_path = self.find_directory(dj_template)
             options["template"] = dj_template_path
             
+        directory = options.get("directory")
+        if directory and not os.path.exists(directory):
+            os.makedirs(directory)
+
         super().handle(*args, **options)
         
         if options.get("name"):
-            self.add_app_to_installed_apps(options["name"])
+            self.add_app_to_installed_apps(options["name"], options.get("directory"))
 
-    def _get_app_config_name(self, app_name):
+    def _get_app_path(self, app_name, directory=None):
+        if directory:
+            return Path(directory)
+        return Path.cwd() / app_name
+
+    def _get_dotted_path(self, app_name, directory=None):
+        if directory:
+             # Calculate relative path from cwd to directory 
+             # Assuming manage.py is in cwd or project root is cwd
+             try:
+                 rel = os.path.relpath(directory, os.getcwd())
+                 if rel == '.':
+                     return app_name
+                 # If directory is inside cwd, convert path to module notation
+                 # e.g. apps/my_app -> apps.my_app
+                 base_module = rel.replace(os.path.sep, '.')
+                 return base_module
+             except ValueError:
+                 # If directory is outside, default to app_name? 
+                 # Or just assume app_name is what matters
+                 return app_name
+        return app_name
+
+    def _get_app_config_name(self, app_path):
         # Try to find apps.py in the created app directory
-        # We assume the app was created in the current working directory
-        app_dir = Path.cwd() / app_name
-        apps_py = app_dir / "apps.py"
+        apps_py = app_path / "apps.py"
         
         if not apps_py.exists():
             return None
@@ -76,16 +101,31 @@ class Command(StartAppCommand):
              return True
         return False
 
-    def add_app_to_installed_apps(self, app_name):
+    def add_app_to_installed_apps(self, app_name, directory=None):
         if not settings.configured:
             return
 
-        # Try to get the dotted path first
-        config_name = self._get_app_config_name(app_name)
+        app_path = self._get_app_path(app_name, directory)
+        dotted_base = self._get_dotted_path(app_name, directory)
+        config_name = self._get_app_config_name(app_path)
+
         if config_name:
-            app_config_path = f"{app_name}.apps.{config_name}"
+            # Update apps.py to include full dotted path in 'name'
+            apps_py_path = app_path / "apps.py"
+            if apps_py_path.exists():
+                content = apps_py_path.read_text()
+                # Check if name is just 'app_name' or something else
+                # We want name = 'dotted_path'
+                # Replace name = 'app_name' with name = 'dotted_base'
+                # Usually template has name = '{{ app_name }}' which becomes name = 'app_name'
+                new_name_line = f"    name = '{dotted_base}'"
+                # Regex to replace indentation and name assignment
+                content = re.sub(r"^\s*name\s*=\s*['\"][\w\.]+['\"]", new_name_line, content, flags=re.MULTILINE)
+                apps_py_path.write_text(content)
+
+            app_config_path = f"{dotted_base}.apps.{config_name}"
         else:
-            app_config_path = app_name
+            app_config_path = dotted_base
 
         if self.check_if_installed(app_name, app_config_path):
              return
