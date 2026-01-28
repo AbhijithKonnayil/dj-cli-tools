@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dj-cli-tools"
-version = "0.2"
+version = "0.3"
 dependencies = ["django>=5.2"]
 description = "A Django app to conduct web-based polls."
 readme = "README.md"
@@ -14,7 +14,7 @@ authors = [{ name = "Abhijith Konnayil", email = "iamabhijith.k@gmail.com" }]
 classifiers = [
     "Environment :: Web Environment",
     "Framework :: Django",
-    "Framework :: Django :: 5.2",                       
+    "Framework :: Django :: 5.2",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
