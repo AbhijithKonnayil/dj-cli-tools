@@ -1,5 +1,5 @@
 # dj-cli-tools
-
+![dj-cli-tools Banner](banner.png)
 **dj-cli-tools** is a command-line utility for Django developers designed to streamline the process of creating applications and managing boilerplate code. It extends Django's built-in management commands to provide enhanced scaffolding capabilities, particularly focused on Django REST Framework (DRF) workflows.
 
 ## Features
@@ -39,7 +39,7 @@ python manage.py start_app <app_name> --dj_template <template_name>
 **Example:**
 To create a REST API app:
 ```bash
-python manage.py start_app core_api --dj_template simple_drf_app_template
+python manage.py start_app core_api --dj_template simple_drf
 ```
 
 **What happens?**
