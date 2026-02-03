@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dj-cli-tools"
-version = "0.3"
+version = "0.4"
 dependencies = ["django>=5.2"]
-description = "A Django app to conduct web-based polls."
+description = "dj-cli-tools is a command-line utility for Django developers designed to streamline the process of creating applications and managing boilerplate code."
 readme = "README.md"
 license = "BSD-3-Clause"
 requires-python = ">= 3.13"
@@ -37,7 +37,7 @@ Homepage = "https://github.com/AbhijithKonnayil/dj-cli-tools/"
 # an include pattern so only the `dj_cli_tools` package (and its subpackages)
 # are included in the built distribution.
 [tool.setuptools.packages.find]
-include = ["dj_cli_tools*", "dj_templates*"]
+include = ["dj_cli_tools*", "dj_templates*", "assets*"]
 
 [tool.setuptools]
 include-package-data = true

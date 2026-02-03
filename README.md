@@ -1,5 +1,5 @@
 # dj-cli-tools
-![dj-cli-tools Banner](banner.png)
+![dj-cli-tools Banner](assets/banner.png)
 **dj-cli-tools** is a command-line utility for Django developers designed to streamline the process of creating applications and managing boilerplate code. It extends Django's built-in management commands to provide enhanced scaffolding capabilities, particularly focused on Django REST Framework (DRF) workflows.
 
 ## Features
